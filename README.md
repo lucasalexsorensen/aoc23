@@ -173,7 +173,112 @@ This can be naïvely solved using brute force - for every race, evaluate how far
 For part 2, we are told that the numbers actually only describe one race - with a time limit of 71530ms and minimum distance of 940200mm. For the example data, the brute force has to evaluate 71530 winding durations. For the real input data, this is on the order of 10^7, which is too many.
 
 Instead, we should look at the problem differently. The travel duration for the winding duration `x` is computed as `travel distance = (time limit - x) * x`. This can be recognized as a 2nd degree polynomial function, which fortunately has a closed form solution.
-Let's rewrite the function as `f(x) = (C-x) * x`, with `C` denoting the time limit. We are interested in finding all `x` such that `f(x) > minimum distance`. To do this, we can simply find the two points where `f(x) = minimum distance`, and we will have obtained the full range of `x` for which the condition holds.
+Let's rewrite the function as `f(x) = (C-x) * x`, with `C` denoting the time limit. We are interested in finding all `x` such that `f(x) > minimum distance`. Due to the monotonicity of 2nd degree polynomials, we can simply find the two points where `f(x) = minimum distance`, and we will have obtained the full range of `x` for which the condition holds.
 
 Thus: `f(x) = minimum distance => (C-x) * x = r`. Solving for x: `(C-x) * x = r => C-x) = r/x => C = r/x + x => x^2 - Cx + r = 0`
 We can use the quadratic formula with `a = 1, b = -C, c = r` to find the two roots, and we return the absolute difference between the two roots as the result (with some rounding, since the problem deals with integers).
+
+### Day 7: Camel Cards ###
+**Topic: Poker**
+
+Example data:
+```
+32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483
+```
+
+Camel cards is similar to poker. You get a list of hands, and you need to rank them by their hand strength. A hand consists of five cards - each card has a relative strength in the descending order `A,K,Q,J,T,9,...,2`.
+
+Different types of hands correspond to different hand strengths:
+* Five of a kind: 5 cards with the same label (e.g. `AAAAA`)
+* Four of a kind: 4 cards with the same label (e.g. `AA8AA`)
+* Full house: 3 cards with the same label, 2 cards with the same label (e.g. `23332`)
+* Three of a kind: 3 cards with the same label (e.g. `TTT98`)
+* Two pair: 2 cards with the same label, 2 cards with the same label (e.g. `23432`)
+* One pair: 2 cards with the same label (e.g. `A23A4`)
+* High card: all labels are distinct (e.g. `23456`)
+
+Hands are ordered based on their hand strengths - as a tie breaker, we start comparing each card from left to right: if they are different, the highest card wins. If they are the same, move on to the next card.
+
+We are also given the corresponding *bids* for each hand. The result is the sum of the rank of each hand multiplied by its bid.
+
+For part 1, we can rely on using python's `Counter` collection to do the heavy lifting. We then look at the counter `.values()` and start pattern matching - e.g. (5) -> five of a kind, (3,2) -> full house, etc.
+
+For part 2, we are told that jokers can act like *whatever card makes the strongest hand possible*. We can simply brute force all possible combinations of joker replacements, and pick the best one using `max()`, which will work since the hand strength is an `IntEnum`, allowing us to use comparator operators.
+
+
+### Day 8: Haunted Wasteland ###
+**Topic: Graph traversal and cycles**
+
+Example data:
+```
+RL
+
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)
+```
+
+We are given a sequence of instructions (R = right, L = left) followed by a description of a graph in the form of `node = (left, right)`.
+
+For part 1, we are asked to start at `AAA` and follow the instructions (repeating them if necessary) until we reach node `ZZZ`. The result is equal to the amount of steps taken to reach `ZZZ`. This is easy to implement using a dictionary and a while loop. To avoid modulo math, we can just use `itertools.cycle` to repeat the instructions indefinitely.
+
+For part 2, we are asked to start at every node (i.e. put a ghost, which will traverse the maze) with names ending in `A`, and denote the amount of steps it takes until they all paths simultaneously arrive at nodes ending with `Z`. Using the while loop solution results in a hanging program - thus, it will take a while to repeatedly traverse the tree until all ghosts line up at a node ending with `Z`. Adding some print statements reveals that each ghost is stuck in a cycle after 0 steps (i.e. they start in their cycles).
+
+We need to figure out the length of the "harmonic" cycle at which all of the subcycles align. This can be done computing the Least Common Multiple (LCM) of all the individual subcycle lengths. This common cycle length is on the order of `O(10^13)`, which would've taken ages to brute force - but apparently, someone did exactly that using [GLSL and an RTX 3090](https://old.reddit.com/r/adventofcode/comments/18dry49/2023_day_8_part_2glsl_brute_forced_in_under_a), and it ran in under a minute :D
+
+
+### Day 9: Mirage Maintenance ###
+**Topic: Arrays and lags**
+...
+
+### Day 10: Pipe Maze ###
+**Topic: Graph traversal and pathfinding**
+...
+
+### Day 11: Cosmic Expansion
+**Topic: Matrices and manhattan distances**
+...
+
+### Day 12: Hot Springs ###
+**Topic: Dynamic Programming and memoization**
+...
+
+### Day 13: Point of Incidence ###
+**Topic: Matrix slices and symmetry**
+...
+
+### Day 14: Parabolic Reflector Dish ###
+**Topic: Simulations and cycles**
+...
+
+### Day 15: Lens Library ###
+**Topic: Hashmaps**
+...
+
+### Day 16: The Floor Will Be Lava ###
+**Topic: Dynamic programming and cycles**
+...
+
+### Day 17: Clumsy Crucible ###
+**Topic: Constrained pathfinding**
+...
+
+### Day 18: Lavaduct Lagoon ###
+**Topic: Polygons and areas**
+...
+
+### Day 19: Aplenty ###
+**Topic: Ranges and DAGs (directed acyclic graph)**
+...
+
+### Day 20: Pulse Propagation ###
+**Topic: Simulation and cycles**
+...
