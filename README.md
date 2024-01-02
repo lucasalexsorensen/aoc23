@@ -13,6 +13,8 @@
 - [Day 4: Scratchcards](#day-4-scratchcards)
 - [Day 5: If You Give A Seed A Fertilizer](#day-5-if-you-give-a-seed-a-fertilizer)
 - [Day 6: Wait for it](#day-6-wait-for-it)
+- [Day 7: Camel Cards](#day-7-camel-cards)
+- [Day 8: Haunted Wasteland](#day-8-haunted-wasteland)
 
 
 ### Day 1: Trebuchet!?
