@@ -1,0 +1,12 @@
+force-exclude = true
+line-length = 100
+select = [
+  # Pyflakes
+  # "F",
+  # pyupgrade
+  "UP",
+  # flake8-bugbear
+  "B",
+  # isort
+  "I",
+]
